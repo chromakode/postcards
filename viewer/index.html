@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="lib/json2.js"></script>
+    <script src="lib/jquery-1.7.1.js"></script>
+    <script src="lib/jquery.masonry.js"></script>
+    <script src="lib/underscore.js"></script>
+    <script src="lib/backbone.js"></script>
+    <script src="postcards.js"></script>
+    <style>
+      .postcard { width:215px; height:215px; padding:7px; text-align:center; display:inline-block; }
+
+      .zoom { position:absolute; -webkit-transform:perspective(800); -webkit-transform-style:preserve-3d; -webkit-transition:all 1s; }
+      .zoom img { position:absolute; background:white; -webkit-backface-visibility:hidden; -webkit-transition:width 1s; }
+      .zoom .front { }
+      .zoom .back { -webkit-transform:rotateY(180deg); }
+      .zoom.rotate .back { -webkit-transform-origin:center center; -webkit-transform:rotateZ(90deg) rotateY(180deg); }
+      .zoom.flipped { -webkit-transform:perspective(800) rotateY(180deg) translateZ(-100px); }
+      .zoom.rotate.flipped { -webkit-transform:perspective(800) rotateY(180deg) rotateZ(-90deg) translateZ(-100px); }
+    </style>
+  </head>
+  <body>
+    <div id="postcards">
+    </div>
+  </body>
+</html>
