@@ -55,10 +55,9 @@ var PostcardZoomView = Backbone.View.extend({
     },
 
     _size: function(images) {
-        var side = $(this.el).is('.flipped') ? images.back : images.front
         this.$('.zoom').css({
-            width: side.width,
-            height: side.height
+            width: images.front.width,
+            height: images.front.height
         })
         this.$('.front').attr('width', images.front.width)
         this.$('.back').attr('width', images.back.width)
