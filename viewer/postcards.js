@@ -94,7 +94,7 @@ var PostcardZoomView = Backbone.View.extend({
 
         if ($el.is('.unzooming')) { return }
 
-        $('#shade').toggleClass('shading')
+        this.$('.shade').toggleClass('shading')
         $el.toggleClass('zoomed')
         if ($el.is('.zoomed')) {
             this._setImages(images.full)
