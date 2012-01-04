@@ -19,12 +19,12 @@
       .zoombox { position:fixed; z-index:5; top:0; left:0; bottom:0; right:0; }
       .zoom { position:absolute; z-index:10; box-shadow:0 0 20px transparent; -webkit-transform:perspective(1250); -webkit-transform-style:preserve-3d; -webkit-transition:all 1s, box-shadow .75s ease .25s; }
       .zoomed .zoom { box-shadow:0 0 30px rgba(0,0,0,.5); }
-      .zoom img { position:absolute; background:white; border-radius:2px; -webkit-backface-visibility:hidden; -webkit-transition:width 1s; }
+      .zoom img { position:absolute; background:white; border-radius:2px; -webkit-backface-visibility:hidden; -webkit-transition:all 1s; }
       .zoom .front { }
       .zoom .back { -webkit-transform:rotateY(180deg); }
       .flipped .zoom { -webkit-transform:perspective(1250) rotateY(180deg) translateZ(-100px); }
-      .rotate .zoom .back { -webkit-transform-origin:0 0; -webkit-transform:rotateZ(-90deg) rotateY(180deg); }
-      .rotate.flipped .zoom { -webkit-transform-origin:0 0; -webkit-transform:perspective(1250) rotateY(180deg) rotateZ(90deg) translateZ(-100px); }
+      .rotate .zoom .back { -webkit-transform:rotateZ(-90deg) rotateY(180deg); }
+      .rotate.flipped .zoom { -webkit-transform:perspective(1250) rotateY(180deg) rotateZ(90deg) translateZ(-100px); }
     </style>
   </head>
   <body>

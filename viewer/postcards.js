@@ -20,7 +20,8 @@ var PostcardZoomView = Backbone.View.extend({
     className: 'zoombox',
 
     events: {
-        'click': 'zoom'
+        'click .shade': 'zoom',
+        'click .zoom': 'flip'
     },
 
     render: function() {
@@ -49,23 +50,42 @@ var PostcardZoomView = Backbone.View.extend({
     _position: function() {
         var offset = this.options.parent.$('img').offset()
         this.$('.zoom').css({
-            left: offset.left,
+            left: offset.left - this.frontLeft,
             top: offset.top - $(window).scrollTop()
         })
     },
 
     _size: function(images) {
+        // Scale and center the images.
+        this.maxWidth = Math.max(images.front.width, images.back.width),
+        this.maxHeight = Math.max(images.front.height, images.back.height)
+        this.frontLeft = (this.maxWidth - images.front.width) / 2,
+        this.frontTop = (this.maxHeight - images.front.height) / 2
+        
+        this.$('.front').attr('width', images.front.width)
+        this.$('.back')
+            .attr('width', images.back.width)
+            .css({
+                left: -(this.maxWidth - images.front.width) / 2,
+                top: (this.maxHeight - images.back.height) / 2
+            })
+        
         this.$('.zoom').css({
             width: images.front.width,
-            height: images.front.height
+            height: images.front.height,
+            marginLeft: this.frontLeft,
+            marginTop: this.frontTop
         })
-        this.$('.front').attr('width', images.front.width)
-        this.$('.back').attr('width', images.back.width)
     },
 
     _setImages: function(images) {
         this.$('.front').attr('src', baseURL + images.front.filename)
         this.$('.back').attr('src', baseURL + images.back.filename)
+    },
+
+    flip: function() {
+        $(this.el).toggleClass('flipped')
+        return this
     },
 
     zoom: function() {
@@ -75,23 +95,25 @@ var PostcardZoomView = Backbone.View.extend({
         if ($el.is('.unzooming')) { return }
 
         $('#shade').toggleClass('shading')
-        $el.toggleClass('zoomed flipped')
-        if ($el.is('.flipped')) {
+        $el.toggleClass('zoomed')
+        if ($el.is('.zoomed')) {
             this._setImages(images.full)
             this._size(images.full)
             this.$('.zoom').css({
-                'left': ($(window).width() - images.full.back.width) / 2,
-                'top': ($(window).height() - images.full.back.height) / 2,
+                'left': ($(window).width() - this.maxWidth) / 2,
+                'top': ($(window).height() - this.maxHeight) / 2,
             })
         } else {
+            $el.removeClass('flipped')
             $el.addClass('unzooming')
-            this._position()
             this._size(images.small)
+            this._position()
             $(this.el).one('webkitTransitionEnd', _.bind(function() {
                 this._setImages(images.small)
                 this.trigger('unzoom')
             }, this))
         }
+        return this
     }
 })
 
@@ -125,7 +147,7 @@ var PostcardView = Backbone.View.extend({
 
             $('body').append(zoom.render().el)
             setTimeout(function() {
-                zoom.zoom()
+                zoom.zoom().flip()
             }, 0)
         }
     },
@@ -159,7 +181,6 @@ var PostcardTileView = Backbone.View.extend({
             itemSelector: '.postcard',
             columnWidth: 215,
             gutterWidth: 8,
-            isFitWidth: true
         })
     }
 })
