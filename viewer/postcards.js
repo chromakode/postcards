@@ -51,7 +51,7 @@ var PostcardZoomView = Backbone.View.extend({
         var offset = this.options.parent.$('img').offset()
         this.$('.zoom').css({
             left: offset.left - this.frontLeft,
-            top: offset.top - $(window).scrollTop()
+            top: offset.top
         })
     },
 
@@ -101,7 +101,7 @@ var PostcardZoomView = Backbone.View.extend({
             this._size(images.full)
             this.$('.zoom').css({
                 'left': ($(window).width() - this.maxWidth) / 2,
-                'top': ($(window).height() - this.maxHeight) / 2,
+                'top': $(window).scrollTop() + ($(window).height() - this.maxHeight) / 2,
             })
         } else {
             $el.removeClass('flipped')

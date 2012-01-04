@@ -16,7 +16,7 @@
       .shade { position:fixed; z-index:0; top:0; left:0; bottom:0; right:0; background:gray; opacity:0; -webkit-transition:opacity .65s; }
       .zoomed .shade { z-index:5; opacity:.5; }
 
-      .zoombox { position:fixed; z-index:5; top:0; left:0; bottom:0; right:0; }
+      .zoombox { position:absolute; z-index:5; top:0; left:0; bottom:0; right:0; }
       .zoom { position:absolute; z-index:10; box-shadow:0 0 20px transparent; -webkit-transform:perspective(1250); -webkit-transform-style:preserve-3d; -webkit-transition:all .65s, box-shadow .75s ease .25s; }
       .zoomed .zoom { box-shadow:0 0 30px rgba(0,0,0,.5); }
       .zoom img { position:absolute; background:white; border-radius:2px; -webkit-backface-visibility:hidden; -webkit-transition:all .65s; }
