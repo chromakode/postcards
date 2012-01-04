@@ -155,14 +155,12 @@ var PostcardTileView = Backbone.View.extend({
             .first(50)
             .each(this.addOne);
         
-        /*
         $(this.el).masonry({
             itemSelector: '.postcard',
             columnWidth: 215,
             gutterWidth: 8,
             isFitWidth: true
         })
-        */
     }
 })
 
