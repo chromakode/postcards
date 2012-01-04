@@ -17,18 +17,20 @@ PostcardCollection = Backbone.Collection.extend({
 
 var PostcardZoomView = Backbone.View.extend({
     tagName: 'div',
-    className: 'zoom',
+    className: 'zoombox',
 
     events: {
         'click': 'zoom'
     },
 
     render: function() {
-        $(this.el)
-            .append(
+        $(this.el).append(
+            this.make('div', {class: 'shade'}),
+            this.make('div', {class: 'zoom'}, [
                 this.make('img', {class: 'side front'}),
-                this.make('img', {class: 'side back'})
-            )
+                this.make('img', {class: 'side back'}),
+            ])
+        )
 
         var smallImages = this.model.get('images').small
         this._setImages(smallImages)
@@ -46,15 +48,15 @@ var PostcardZoomView = Backbone.View.extend({
 
     _position: function() {
         var offset = this.options.parent.$('img').offset()
-        $(this.el).css({
+        this.$('.zoom').css({
             left: offset.left,
-            top: offset.top
+            top: offset.top - $(window).scrollTop()
         })
     },
 
     _size: function(images) {
         var side = $(this.el).is('.flipped') ? images.back : images.front
-        $(this.el).css({
+        this.$('.zoom').css({
             width: side.width,
             height: side.height
         })
@@ -71,15 +73,19 @@ var PostcardZoomView = Backbone.View.extend({
         var $el = $(this.el),
             images = this.model.get('images')
 
-        $el.toggleClass('flipped')
+        if ($el.is('.unzooming')) { return }
+
+        $('#shade').toggleClass('shading')
+        $el.toggleClass('zoomed flipped')
         if ($el.is('.flipped')) {
             this._setImages(images.full)
             this._size(images.full)
-            $el.css({
+            this.$('.zoom').css({
                 'left': ($(window).width() - images.full.back.width) / 2,
                 'top': ($(window).height() - images.full.back.height) / 2,
             })
         } else {
+            $el.addClass('unzooming')
             this._position()
             this._size(images.small)
             $(this.el).one('webkitTransitionEnd', _.bind(function() {
@@ -102,7 +108,9 @@ var PostcardView = Backbone.View.extend({
         var thumb = this.model.get('images').small
         $(this.el).append(
             this.make('img', {
-                src: baseURL + thumb.front.filename
+                src: baseURL + thumb.front.filename,
+                width: thumb.front.width,
+                height: thumb.front.height
             }))
         return this
     },

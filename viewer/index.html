@@ -8,19 +8,26 @@
     <script src="lib/backbone.js"></script>
     <script src="postcards.js"></script>
     <style>
-      .postcard { width:215px; height:215px; padding:7px; text-align:center; display:inline-block; }
+      .postcard { padding:7px; text-align:center; display:inline-block; }
+      .postcard.zoomed { opacity:.25; }
 
-      .zoom { position:absolute; -webkit-transform:perspective(800); -webkit-transform-style:preserve-3d; -webkit-transition:all 1s; }
-      .zoom img { position:absolute; background:white; -webkit-backface-visibility:hidden; -webkit-transition:width 1s; }
+      .postcard, .zoom { cursor:pointer; }
+
+      .shade { position:fixed; z-index:0; top:0; left:0; bottom:0; right:0; background:gray; opacity:0; -webkit-transition:opacity 1s; }
+      .zoomed .shade { z-index:5; opacity:.5; }
+
+      .zoombox { position:fixed; z-index:5; top:0; left:0; bottom:0; right:0; }
+      .zoom { position:absolute; z-index:10; -webkit-transform:perspective(800); -webkit-transform-style:preserve-3d; -webkit-transition:all 1s; }
+      .zoom img { position:absolute; background:white; border-radius:2px; -webkit-backface-visibility:hidden; -webkit-transition:width 1s; }
       .zoom .front { }
       .zoom .back { -webkit-transform:rotateY(180deg); }
-      .zoom.rotate .back { -webkit-transform-origin:center center; -webkit-transform:rotateZ(90deg) rotateY(180deg); }
-      .zoom.flipped { -webkit-transform:perspective(800) rotateY(180deg) translateZ(-100px); }
-      .zoom.rotate.flipped { -webkit-transform:perspective(800) rotateY(180deg) rotateZ(-90deg) translateZ(-100px); }
+      .rotate .zoom .back { -webkit-transform-origin:center center; -webkit-transform:rotateZ(90deg) rotateY(180deg); }
+      .flipped .zoom { -webkit-transform:perspective(800) rotateY(180deg) translateZ(-100px); }
+      .rotate.flipped .zoom { -webkit-transform:perspective(800) rotateY(180deg) rotateZ(-90deg) translateZ(-100px); }
     </style>
   </head>
   <body>
-    <div id="postcards">
-    </div>
+    <div id="postcards"></div>
+    <div id="shade"></div>
   </body>
 </html>
