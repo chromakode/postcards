@@ -153,6 +153,35 @@ var PostcardView = Backbone.View.extend({
     },
 })
 
+var PostcardMapView = Backbone.View.extend({
+    initialize: function() {
+        _.bindAll(this, 'addOne', 'addAll')
+
+        this.collection
+            .bind('add', this.addOne)
+            .bind('reset', this.addAll)
+
+    },
+
+    render: function() {
+        $(this.el)
+            .text('instantiate a map here')
+            .css({
+                width: 800,
+                height: 300,
+                background: '#ccc'
+            })
+    },
+
+    addOne: function(postcard) {
+        // add a point to the map here!
+    },
+
+    addAll: function() {
+        this.collection.each(this.addOne);
+    }
+})
+
 var PostcardTileView = Backbone.View.extend({
     initialize: function() {
         _.bindAll(this, 'addOne', 'addAll')
@@ -161,7 +190,6 @@ var PostcardTileView = Backbone.View.extend({
             .bind('add', this.addOne)
             .bind('reset', this.addAll)
 
-        this.collection.fetch()
     },
 
     addOne: function(postcard) {
@@ -188,9 +216,16 @@ var PostcardTileView = Backbone.View.extend({
 
 $(function() {
     var postcards = new PostcardCollection,
+        map = new PostcardMapView({
+            el: $('#postcard-map'),
+            collection: postcards
+        }),
         grid = new PostcardTileView({
             el: $('#postcards'),
             collection: postcards
         })
+
+    map.render()
+    postcards.fetch()
 })
 
